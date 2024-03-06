@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://swetashreya004:YnoAdTC1MK5a@ep-solitary-block-a50cvldd.us-east-2.aws.neon.tech/Sweta?sslmode=require"
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  email String
+  password String
+  firstname String?
+  todo Todo[]
+  //jb bhi schema prisma gfile k andr koi bhi change hogi to database ko migrate krwaana parega
+
+}
+model Todo{
+  id Int @id @default(autoincrement())
+  title String
+  desc  String
+  userid Int
+  user User @relation(fields: [userid],references: [id])
+}
+//create a fucnitn that insert todo data
