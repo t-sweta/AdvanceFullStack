@@ -14,28 +14,41 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   firstname String
   lastname  String
   email     String
   password  String
   bio       String
+  tweet     Tweet[]
+  retweet   Retweet[]
 }
-model Tweet{
-  id Int @id @default(autoincrement())
-  title String
-  content String
-  creatAt DateTime @default(now())
-  userId Int
-  likecount Int @default(0)
+
+model Tweet {
+  id           Int       @id @default(autoincrement())
+  title        String
+  content      String
+  creatAt      DateTime  @default(now())
+  userId       Int
+  likecount    Int       @default(0)
+  retweetcount Int       @default(0)
   //some things also
-  like Like[]
-
+  like         Like[]
+  retweet      Retweet[]
+  User         User      @relation(fields: [userId], references: [id])
 }
-model Like{
-  id Int @id @default(autoincrement())
-  userid Int
+
+model Like {
+  id      Int   @id @default(autoincrement())
+  userid  Int
   tweetid Int
-  tweet Tweet @relation(fields: [tweetid],references: [id],onDelete: Cascade)
+  tweet   Tweet @relation(fields: [tweetid], references: [id], onDelete: Cascade)
 }
 
+model Retweet {
+  id        Int   @id @default(autoincrement())
+  tweetid   Int
+  retweetby Int
+  user      User  @relation(fields: [retweetby], references: [id])
+  tweet     Tweet @relation(fields: [tweetid], references: [id])
+}
